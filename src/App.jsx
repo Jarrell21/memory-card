@@ -1,25 +1,45 @@
+import { Container, Grid } from "@mui/material";
 import "./App.css";
 import { useEffect, useState } from "react";
+import PokemonCard from "./components/PokemonCard";
+import Header from "./components/Header";
 
 function App() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("https://pokeapi.co/api/v2/pokemon-species");
+      const response = await fetch(
+        "https://pokeapi.co/api/v2/pokemon?offset=0&limit=23"
+      );
       const data = await response.json();
-      setData(data.results);
+
+      function getEveryThirdItem(array) {
+        var result = [];
+        for (var i = 0; i < array.length; i += 3) {
+          result.push(array[i]);
+        }
+        return result;
+      }
+
+      setData(getEveryThirdItem(data.results));
     };
     fetchData();
   }, []);
 
   return (
-    <div className="App">
-      <p className="">Hello World</p>
-      {data.map((item, index) => (
-        <p key={index}>{item.name}</p>
-      ))}
-    </div>
+    <>
+      <Header />
+      <Container maxWidth="xl">
+        <Grid container spacing={2}>
+          {data.map((item, index) => (
+            <Grid item key={index} xs={3}>
+              <PokemonCard name={item.name} detailsUrl={item.url} />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+    </>
   );
 }
 
