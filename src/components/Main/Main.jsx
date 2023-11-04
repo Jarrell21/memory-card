@@ -6,8 +6,10 @@ import {
   Grid,
   Skeleton,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import PokemonCard from "./PokemonCard";
+import GameResultModal from "./GameResultModal";
 
 function Main() {
   const [data, setData] = React.useState([]);
@@ -15,6 +17,10 @@ function Main() {
   const [loading, setLoading] = React.useState(true);
   const [score, setScore] = React.useState(0);
   const [bestScore, setBestScore] = React.useState(0);
+  const [openResultModal, setOpenResultModal] = React.useState({
+    open: false,
+    playerWon: false,
+  });
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -46,53 +52,42 @@ function Main() {
     }
   }, [score, bestScore]);
 
-  React.useEffect(() => {
-    const shuffleCards = () => {
-      let currentIndex = data.length,
-        temporaryValue,
-        randomIndex;
-
-      // While there remain elements to shuffle...
-      while (0 !== currentIndex) {
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-
-        // And swap it with the current element.
-        temporaryValue = data[currentIndex];
-        data[currentIndex] = data[randomIndex];
-        data[randomIndex] = temporaryValue;
-      }
-    };
-
-    if (score < 9) {
-      shuffleCards();
-    }
-  }, [data, score]);
-
   function handleGetNewDataSet() {
     const randomNumber = getRandomNumber(1001);
     setDataOffSet(randomNumber);
     setScore(0);
-    setBestScore(0);
   }
 
   function handleCardClick(name, clicked) {
     if (score > 9) return;
 
+    if (score === 1) {
+      if (clicked) {
+        setOpenResultModal({
+          open: true,
+          playerWon: false,
+        });
+      } else {
+        setOpenResultModal({
+          open: true,
+          playerWon: true,
+        });
+      }
+    } else {
+      shuffleCards();
+      loadCards();
+    }
+
     if (clicked) {
       resetClickedProp();
       setScore(0);
+
       return;
     }
 
-    const newData = data.map((obj) => {
-      if (obj.name === name) {
-        return { ...obj, clicked: true };
-      }
-
-      return obj;
-    });
+    const newData = data.map((obj) =>
+      obj.name === name ? { ...obj, clicked: true } : obj
+    );
 
     setData(newData);
     setScore((prev) => prev + 1);
@@ -109,6 +104,24 @@ function Main() {
     setTimeout(() => {
       setLoading(false);
     }, 1000);
+  }
+
+  function shuffleCards() {
+    let currentIndex = data.length,
+      temporaryValue,
+      randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = data[currentIndex];
+      data[currentIndex] = data[randomIndex];
+      data[randomIndex] = temporaryValue;
+    }
   }
 
   function getEveryThirdItem(array) {
@@ -131,9 +144,13 @@ function Main() {
           <Typography>Best Score: {bestScore}</Typography>
         </Grid>
         <Grid item s={4}>
-          <Button variant="outlined" onClick={handleGetNewDataSet}>
-            Get new set of cards
-          </Button>
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <Button variant="outlined" onClick={handleGetNewDataSet}>
+              Get new set of cards
+            </Button>
+          )}
         </Grid>
       </Grid>
       <Grid
@@ -163,6 +180,11 @@ function Main() {
           </Grid>
         ))}
       </Grid>
+      <GameResultModal
+        open={openResultModal}
+        setOpen={setOpenResultModal}
+        restartGame={handleGetNewDataSet}
+      />
     </Container>
   );
 }
