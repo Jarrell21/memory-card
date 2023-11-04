@@ -1,7 +1,5 @@
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
 import PropTypes from "prop-types";
+import { Box, Modal, Typography } from "@mui/material/Box";
 
 const style = {
   position: "absolute",

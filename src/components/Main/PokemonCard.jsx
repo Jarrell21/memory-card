@@ -1,9 +1,12 @@
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import { CardActionArea, Fade } from "@mui/material";
 import PropTypes from "prop-types";
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Fade,
+  Typography,
+} from "@mui/material";
 
 function PokemonCard({ name, detailsUrl, clicked, handleCardClick }) {
   const pokemonId = sliceString(detailsUrl, "/");
