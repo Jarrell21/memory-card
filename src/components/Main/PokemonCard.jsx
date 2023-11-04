@@ -2,16 +2,12 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea, Fade, Grow, Slide, Zoom } from "@mui/material";
+import { CardActionArea, Fade } from "@mui/material";
 import PropTypes from "prop-types";
 
-function PokemonCard({ name, detailsUrl, growTransition }) {
+function PokemonCard({ name, detailsUrl, clicked, handleCardClick }) {
   const pokemonId = sliceString(detailsUrl, "/");
   const pokemonImg = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
-
-  function handleCardClick(event) {
-    console.log(event.target.parentNode);
-  }
 
   function sliceString(input, delimiter) {
     var parts = input.split(delimiter);
@@ -23,14 +19,9 @@ function PokemonCard({ name, detailsUrl, growTransition }) {
   }
 
   return (
-    <Grow
-      in={growTransition}
-      style={{ transformOrigin: "0 0 0" }}
-      {...(growTransition ? { timeout: 1000 } : {})}
-      onClick={handleCardClick}
-    >
+    <Fade in={true} style={{ transformOrigin: "0 0 0" }} {...{ timeout: 2000 }}>
       <Card sx={{ maxWidth: 345, maxHeight: 400 }}>
-        <CardActionArea>
+        <CardActionArea onClick={() => handleCardClick(name, clicked)}>
           <CardMedia component="img" image={pokemonImg} alt={name} />
           <CardContent>
             <Typography
@@ -39,19 +30,20 @@ function PokemonCard({ name, detailsUrl, growTransition }) {
               component="div"
               textAlign={"center"}
             >
-              {capitalize(name)}
+              {capitalize(name) + " " + clicked}
             </Typography>
           </CardContent>
         </CardActionArea>
       </Card>
-    </Grow>
+    </Fade>
   );
 }
 
 PokemonCard.propTypes = {
   name: PropTypes.string,
   detailsUrl: PropTypes.string,
-  growTransition: PropTypes.bool,
+  clicked: PropTypes.bool,
+  handleCardClick: PropTypes.func,
 };
 
 export default PokemonCard;
