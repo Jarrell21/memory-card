@@ -1,8 +1,10 @@
-# React + Vite
+# memory-card
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple Pokemon Memory Card Game to practice React.
 
-Currently, two official plugins are available:
+## Built with
+- React
+- Material UI
+- Vite
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### See live demo [here](https://jarrell21-memory-card.netlify.app/)
