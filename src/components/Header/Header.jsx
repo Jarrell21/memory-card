@@ -2,12 +2,12 @@ import * as React from "react";
 import {
   AppBar,
   Box,
-  HelpOutlineIcon,
   IconButton,
   Toolbar,
   Tooltip,
   Typography,
 } from "@mui/material";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import HeaderModal from "./HeaderModal";
 
 function Header() {
