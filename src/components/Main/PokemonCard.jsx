@@ -33,7 +33,7 @@ function PokemonCard({ name, detailsUrl, clicked, handleCardClick }) {
               component="div"
               textAlign={"center"}
             >
-              {capitalize(name) + " " + clicked}
+              {capitalize(name)}
             </Typography>
           </CardContent>
         </CardActionArea>
