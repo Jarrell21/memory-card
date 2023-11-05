@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  ImageListItem,
   Modal,
   Typography,
 } from "@mui/material";
@@ -13,7 +14,6 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -33,46 +33,72 @@ function GameResultModal({ open, setOpen, restartGame }) {
   };
 
   return (
-    <div>
-      <Modal
-        open={open.open}
-        onClose={(event, reason) => {
-          if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
-            handleClose(event, reason);
-          }
-        }}
-        // disableBackdropClick
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography
-            id="modal-modal-title"
-            variant="h4"
-            component="h2"
-            textAlign="center"
-          >
-            {open.playerWon ? "You win!" : "You lose!"}
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }} variant="h6">
-            <Box textAlign="center">
-              {loading ? (
-                <CircularProgress />
-              ) : (
-                <Button variant="contained" onClick={handleClose}>
-                  Play again
-                </Button>
-              )}
-            </Box>
-          </Typography>
-        </Box>
-      </Modal>
-    </div>
+    <Modal
+      open={open.open}
+      onClose={(event, reason) => {
+        if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
+          handleClose(event, reason);
+        }
+      }}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style}>
+        {loading ? (
+          <>
+            <Typography textAlign="center" id="modal-modal-title" variant="h4">
+              Loading game...
+            </Typography>
+            <ImageListItem sx={{ padding: 1 }}>
+              <img
+                src="https://media.giphy.com/media/U2nN0ridM4lXy/giphy.gif"
+                alt="Sad_pikachu"
+              />
+            </ImageListItem>
+          </>
+        ) : open.playerWon ? (
+          <>
+            <Typography textAlign="center" id="modal-modal-title" variant="h4">
+              You Win!
+            </Typography>
+            <ImageListItem sx={{ padding: 1 }}>
+              <img
+                src="https://media.giphy.com/media/13G7hmmFr9yuxG/giphy.gif"
+                alt="Sad_pikachu"
+              />
+            </ImageListItem>
+          </>
+        ) : (
+          <>
+            <Typography textAlign="center" id="modal-modal-title" variant="h4">
+              You Lose!
+            </Typography>
+            <ImageListItem sx={{ padding: 1 }}>
+              <img
+                src="https://media.giphy.com/media/uWPGqy4rkgllS/giphy.gif"
+                alt="Sad_pikachu"
+              />
+            </ImageListItem>
+          </>
+        )}
+        <Typography id="modal-modal-description" sx={{ mt: 2 }} variant="h6">
+          <Box textAlign="center">
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              <Button variant="contained" onClick={handleClose}>
+                Play again
+              </Button>
+            )}
+          </Box>
+        </Typography>
+      </Box>
+    </Modal>
   );
 }
 
 GameResultModal.propTypes = {
-  open: PropTypes.bool,
+  open: PropTypes.object,
   setOpen: PropTypes.func,
   restartGame: PropTypes.func,
 };
