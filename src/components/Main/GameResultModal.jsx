@@ -27,7 +27,11 @@ function GameResultModal({ open, setOpen, restartGame }) {
     setLoading(true);
 
     setTimeout(() => {
-      setOpen(false);
+      setOpen({
+        open: false,
+        loading: loading,
+        playerWon: false,
+      });
       setLoading(false);
     }, 2000);
   };

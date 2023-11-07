@@ -12,7 +12,7 @@ const style = {
   p: 4,
 };
 
-function HeaderModal({ open, setOpen }) {
+function HelpModal({ open, setOpen }) {
   const handleClose = () => setOpen(false);
 
   return (
@@ -42,9 +42,9 @@ function HeaderModal({ open, setOpen }) {
   );
 }
 
-HeaderModal.propTypes = {
+HelpModal.propTypes = {
   open: PropTypes.bool,
   setOpen: PropTypes.func,
 };
 
-export default HeaderModal;
+export default HelpModal;

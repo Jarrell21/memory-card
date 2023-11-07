@@ -1,11 +1,15 @@
 import * as React from "react";
-import { Container } from "@mui/material";
+import { Container, Fab } from "@mui/material";
 import LandingPage from "./LandingPage";
 import Game from "./Game";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import HeaderModal from "./HelpModal";
 
 function Main() {
   const [gameStart, setGameStart] = React.useState(false);
   const [difficulty, setDifficulty] = React.useState(60);
+  const [openModal, setOpenModal] = React.useState(false);
+  const handleOpen = () => setOpenModal(true);
   return (
     <Container maxWidth="xl">
       {gameStart ? (
@@ -16,6 +20,20 @@ function Main() {
           setGameStart={setGameStart}
         />
       )}
+      <Fab
+        color="primary"
+        aria-label="add"
+        sx={{ position: "fixed", bottom: 20, right: 20 }}
+      >
+        <HelpOutlineIcon
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          onClick={handleOpen}
+        />
+        <HeaderModal open={openModal} setOpen={setOpenModal} />
+      </Fab>
     </Container>
   );
 }

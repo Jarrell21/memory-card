@@ -144,7 +144,7 @@ function Game({ difficulty, setGameStart }) {
       <Grid container margin={1} spacing={1} justifyContent="space-around">
         <Grid item>
           <Typography>
-            Score: {score}/{difficulty / 3}
+            Score: {score} / {difficulty / 3}
           </Typography>
           <Typography>Best Score: {bestScore}</Typography>
         </Grid>

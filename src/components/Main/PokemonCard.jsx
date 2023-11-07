@@ -23,7 +23,7 @@ function PokemonCard({ name, detailsUrl, clicked, handleCardClick }) {
 
   return (
     <Fade in={true} style={{ transformOrigin: "0 0 0" }} {...{ timeout: 2000 }}>
-      <Card sx={{ maxWidth: 345, maxHeight: 400 }}>
+      <Card variant="outlined" sx={{ maxWidth: 345, maxHeight: 400 }}>
         <CardActionArea onClick={() => handleCardClick(name, clicked)}>
           <CardMedia component="img" image={pokemonImg} alt={name} />
           <CardContent>
