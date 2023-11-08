@@ -32,9 +32,14 @@ function HelpModal({ open, setOpen }) {
           >
             How to Play
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }} variant="h6">
-            Score a point by clicking a Pokemon card. You will lose all your
-            points if you click on the same Pokemon card twice!
+          <Typography
+            id="modal-modal-description"
+            sx={{ mt: 2 }}
+            variant="h6"
+            textAlign={"center"}
+          >
+            Score a point by clicking a Pokemon card. You will lose if you click
+            on the same Pokemon card twice!
           </Typography>
         </Box>
       </Modal>

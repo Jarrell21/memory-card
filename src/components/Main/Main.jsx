@@ -3,7 +3,7 @@ import { Container, Fab } from "@mui/material";
 import LandingPage from "./LandingPage";
 import Game from "./Game";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import HeaderModal from "./HelpModal";
+import HelpModal from "./HelpModal";
 
 function Main() {
   const [gameStart, setGameStart] = React.useState(false);
@@ -32,7 +32,7 @@ function Main() {
           aria-label="menu"
           onClick={handleOpen}
         />
-        <HeaderModal open={openModal} setOpen={setOpenModal} />
+        <HelpModal open={openModal} setOpen={setOpenModal} />
       </Fab>
     </Container>
   );

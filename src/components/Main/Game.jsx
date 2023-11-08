@@ -41,10 +41,6 @@ function Game({ difficulty, setGameStart }) {
       }
     };
     fetchData();
-
-    return () => {
-      clearTimeout();
-    };
   }, [dataOffSet, difficulty]);
 
   React.useEffect(() => {
@@ -57,10 +53,6 @@ function Game({ difficulty, setGameStart }) {
     const randomNumber = getRandomNumber(1001);
     setDataOffSet(randomNumber);
     setScore(0);
-  }
-
-  function handleChangeDifficulty() {
-    setGameStart(false);
   }
 
   function handleCardClick(name, clicked) {
@@ -78,7 +70,7 @@ function Game({ difficulty, setGameStart }) {
       return;
     }
 
-    if (score === totalScore - 1 && !clicked) {
+    if (score === totalScore - 1) {
       setOpenResultModal({
         open: true,
         playerWon: true,
@@ -159,7 +151,7 @@ function Game({ difficulty, setGameStart }) {
                 </Button>
               </Grid>
               <Grid item>
-                <Button variant="outlined" onClick={handleChangeDifficulty}>
+                <Button variant="outlined" onClick={() => setGameStart(false)}>
                   Change difficulty
                 </Button>
               </Grid>
@@ -173,26 +165,28 @@ function Game({ difficulty, setGameStart }) {
         spacing={{ xs: 2, md: 3 }}
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
-        {(loading ? Array.from(new Array(10)) : data).map((item, index) => (
-          <Grid item key={index} xs={2.4}>
-            {item ? (
-              <PokemonCard
-                name={item.name}
-                detailsUrl={item.url}
-                clicked={item.clicked}
-                handleCardClick={handleCardClick}
-              />
-            ) : (
-              <Fade
-                in={true}
-                style={{ transformOrigin: "0 0 0" }}
-                {...{ timeout: 1000 }}
-              >
-                <Skeleton variant="rectangular" height={300} />
-              </Fade>
-            )}
-          </Grid>
-        ))}
+        {(loading ? Array.from(new Array(difficulty / 3)) : data).map(
+          (item, index) => (
+            <Grid item key={index} xs={2.4}>
+              {item ? (
+                <PokemonCard
+                  name={item.name}
+                  detailsUrl={item.url}
+                  clicked={item.clicked}
+                  handleCardClick={handleCardClick}
+                />
+              ) : (
+                <Fade
+                  in={true}
+                  style={{ transformOrigin: "0 0 0" }}
+                  {...{ timeout: 1000 }}
+                >
+                  <Skeleton variant="rectangular" height={300} />
+                </Fade>
+              )}
+            </Grid>
+          )
+        )}
       </Grid>
       <GameResultModal
         open={openResultModal}

@@ -1,5 +1,5 @@
 import "./App.css";
-import Header from "./components/Header/Header";
+import Header from "./components/Header";
 import Main from "./components/Main/Main";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material";
