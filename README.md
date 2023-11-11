@@ -4,6 +4,7 @@ A simple Pokemon Memory Card Game to practice React.
 
 ## Built with
 - React
+- TypeScript
 - Material UI
 - Vite
 
