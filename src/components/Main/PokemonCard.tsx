@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import {
   Card,
   CardActionArea,
@@ -8,16 +7,28 @@ import {
   Typography,
 } from "@mui/material";
 
-function PokemonCard({ name, detailsUrl, clicked, handleCardClick }) {
+type PokemonCardProps = {
+  name: string;
+  detailsUrl: string;
+  clicked: boolean;
+  handleCardClick: (name: string, clicked: boolean) => void;
+};
+
+export default function PokemonCard({
+  name,
+  detailsUrl,
+  clicked,
+  handleCardClick,
+}: PokemonCardProps) {
   const pokemonId = sliceString(detailsUrl, "/");
   const pokemonImg = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
 
-  function sliceString(input, delimiter) {
+  function sliceString(input: string, delimiter: string) {
     var parts = input.split(delimiter);
     return parts[parts.length - 2];
   }
 
-  function capitalize(str) {
+  function capitalize(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
@@ -41,12 +52,3 @@ function PokemonCard({ name, detailsUrl, clicked, handleCardClick }) {
     </Fade>
   );
 }
-
-PokemonCard.propTypes = {
-  name: PropTypes.string,
-  detailsUrl: PropTypes.string,
-  clicked: PropTypes.bool,
-  handleCardClick: PropTypes.func,
-};
-
-export default PokemonCard;

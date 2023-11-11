@@ -1,5 +1,4 @@
 import * as React from "react";
-import PropTypes from "prop-types";
 import {
   Box,
   Button,
@@ -8,6 +7,18 @@ import {
   Modal,
   Typography,
 } from "@mui/material";
+
+type GameResultModalProps = {
+  openResultModal: OpenResultModalProps;
+  setOpenResultModal: (arg: OpenResultModalProps) => void;
+  restartGame: () => void;
+};
+
+type OpenResultModalProps = {
+  open: boolean;
+  loading: boolean;
+  playerWon: boolean;
+};
 
 const style = {
   position: "absolute",
@@ -20,14 +31,18 @@ const style = {
   p: 4,
 };
 
-function GameResultModal({ open, setOpen, restartGame }) {
+export default function GameResultModal({
+  openResultModal,
+  setOpenResultModal,
+  restartGame,
+}: GameResultModalProps) {
   const [loading, setLoading] = React.useState(false);
   const handleClose = () => {
     restartGame();
     setLoading(true);
 
     setTimeout(() => {
-      setOpen({
+      setOpenResultModal({
         open: false,
         loading: loading,
         playerWon: false,
@@ -38,10 +53,10 @@ function GameResultModal({ open, setOpen, restartGame }) {
 
   return (
     <Modal
-      open={open.open}
+      open={openResultModal.open}
       onClose={(event, reason) => {
         if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
-          handleClose(event, reason);
+          handleClose();
         }
       }}
       aria-labelledby="modal-modal-title"
@@ -60,7 +75,7 @@ function GameResultModal({ open, setOpen, restartGame }) {
               />
             </ImageListItem>
           </>
-        ) : open.playerWon ? (
+        ) : openResultModal.playerWon ? (
           <>
             <Typography textAlign="center" id="modal-modal-title" variant="h4">
               You Win!
@@ -100,11 +115,3 @@ function GameResultModal({ open, setOpen, restartGame }) {
     </Modal>
   );
 }
-
-GameResultModal.propTypes = {
-  open: PropTypes.object,
-  setOpen: PropTypes.func,
-  restartGame: PropTypes.func,
-};
-
-export default GameResultModal;

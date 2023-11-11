@@ -5,7 +5,7 @@ import Game from "./Game";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import HelpModal from "./HelpModal";
 
-function Main() {
+export default function Main() {
   const [gameStart, setGameStart] = React.useState(false);
   const [difficulty, setDifficulty] = React.useState(60);
   const [openModal, setOpenModal] = React.useState(false);
@@ -25,17 +25,9 @@ function Main() {
         aria-label="add"
         sx={{ position: "fixed", bottom: 20, right: 20 }}
       >
-        <HelpOutlineIcon
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          onClick={handleOpen}
-        />
+        <HelpOutlineIcon onClick={handleOpen} />
         <HelpModal open={openModal} setOpen={setOpenModal} />
       </Fab>
     </Container>
   );
 }
-
-export default Main;
