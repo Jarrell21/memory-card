@@ -1,5 +1,4 @@
 import * as React from "react";
-import PropTypes from "prop-types";
 import {
   Button,
   CircularProgress,
@@ -11,8 +10,18 @@ import {
 import PokemonCard from "./PokemonCard";
 import GameResultModal from "./GameResultModal";
 
-function Game({ difficulty, setGameStart }) {
-  const [data, setData] = React.useState([]);
+type GameProps = {
+  difficulty: number;
+  setGameStart: (arg: boolean) => void;
+};
+
+type ExpectedData = {
+  name: string;
+  url: string;
+};
+
+export default function Game({ difficulty, setGameStart }: GameProps) {
+  const [data, setData] = React.useState<ExpectedData[]>([]);
   const [dataOffSet, setDataOffSet] = React.useState(getRandomNumber(1001));
   const [loading, setLoading] = React.useState(true);
   const [score, setScore] = React.useState(0);
@@ -29,12 +38,15 @@ function Game({ difficulty, setGameStart }) {
         const response = await fetch(
           `https://pokeapi.co/api/v2/pokemon?offset=${dataOffSet}&limit=${difficulty}`
         );
-        let data = await response.json();
-        data = getEveryThirdItem(data.results);
+        let tempData = await response.json();
+        tempData = getEveryThirdItem(tempData.results);
 
-        data = data.map((obj) => ({ ...obj, clicked: false }));
+        tempData = tempData.map((obj: ExpectedData) => ({
+          ...obj,
+          clicked: false,
+        }));
 
-        setData(data);
+        setData(tempData);
         loadCards();
       } catch (error) {
         console.log(error);
@@ -55,15 +67,12 @@ function Game({ difficulty, setGameStart }) {
     setScore(0);
   }
 
-  function handleCardClick(name, clicked) {
+  function handleCardClick(name: string, clicked: boolean) {
     const totalScore = difficulty / 3;
     if (score > totalScore - 1) return;
 
     if (clicked) {
-      setOpenResultModal({
-        open: true,
-        playerWon: false,
-      });
+      setOpenResultModal((prev) => ({ ...prev, open: true, playerWon: false }));
       resetClickedProp();
       setScore(0);
 
@@ -71,16 +80,13 @@ function Game({ difficulty, setGameStart }) {
     }
 
     if (score === totalScore - 1) {
-      setOpenResultModal({
-        open: true,
-        playerWon: true,
-      });
+      setOpenResultModal((prev) => ({ ...prev, open: true, playerWon: true }));
     } else {
       shuffleCards();
       loadCards();
     }
 
-    const newData = data.map((obj) =>
+    const newData = data.map((obj: ExpectedData) =>
       obj.name === name ? { ...obj, clicked: true } : obj
     );
 
@@ -89,7 +95,10 @@ function Game({ difficulty, setGameStart }) {
   }
 
   function resetClickedProp() {
-    const newData = data.map((obj) => ({ ...obj, clicked: false }));
+    const newData = data.map((obj: ExpectedData) => ({
+      ...obj,
+      clicked: false,
+    }));
     setData(newData);
   }
 
@@ -119,7 +128,7 @@ function Game({ difficulty, setGameStart }) {
     }
   }
 
-  function getEveryThirdItem(array) {
+  function getEveryThirdItem(array: ExpectedData[]) {
     var result = [];
     for (var i = 0; i < array.length; i += 3) {
       result.push(array[i]);
@@ -127,7 +136,7 @@ function Game({ difficulty, setGameStart }) {
     return result;
   }
 
-  function getRandomNumber(limit) {
+  function getRandomNumber(limit: number) {
     return Math.floor(Math.random() * limit);
   }
 
@@ -189,19 +198,10 @@ function Game({ difficulty, setGameStart }) {
         )}
       </Grid>
       <GameResultModal
-        open={openResultModal}
-        setOpen={setOpenResultModal}
+        openResultModal={openResultModal}
+        setOpenResultModal={setOpenResultModal}
         restartGame={handleGetNewDataSet}
-        loading={loading}
-        setLoading={setLoading}
       />
     </>
   );
 }
-
-Game.propTypes = {
-  difficulty: PropTypes.number,
-  setGameStart: PropTypes.func,
-};
-
-export default Game;

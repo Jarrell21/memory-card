@@ -1,5 +1,9 @@
-import PropTypes from "prop-types";
 import { Box, Modal, Typography } from "@mui/material";
+
+type HelpModalProps = {
+  open: boolean;
+  setOpen: (arg: boolean) => void;
+};
 
 const style = {
   position: "absolute",
@@ -12,7 +16,7 @@ const style = {
   p: 4,
 };
 
-function HelpModal({ open, setOpen }) {
+export default function HelpModal({ open, setOpen }: HelpModalProps) {
   const handleClose = () => setOpen(false);
 
   return (
@@ -46,10 +50,3 @@ function HelpModal({ open, setOpen }) {
     </div>
   );
 }
-
-HelpModal.propTypes = {
-  open: PropTypes.bool,
-  setOpen: PropTypes.func,
-};
-
-export default HelpModal;

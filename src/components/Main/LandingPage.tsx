@@ -1,5 +1,9 @@
-import PropTypes from "prop-types";
 import { Box, Button, Fade, Grid, Typography } from "@mui/material";
+
+type LandingPageProps = {
+  setDifficulty: (arg: number) => void;
+  setGameStart: (arg: boolean) => void;
+};
 
 const style = {
   position: "absolute",
@@ -12,8 +16,11 @@ const style = {
   p: 4,
 };
 
-function LandingPage({ setDifficulty, setGameStart }) {
-  function handleDifficulty(number) {
+export default function LandingPage({
+  setDifficulty,
+  setGameStart,
+}: LandingPageProps) {
+  function handleDifficulty(number: number) {
     setDifficulty(number);
     setGameStart(true);
   }
@@ -46,10 +53,3 @@ function LandingPage({ setDifficulty, setGameStart }) {
     </Fade>
   );
 }
-
-LandingPage.propTypes = {
-  setDifficulty: PropTypes.func,
-  setGameStart: PropTypes.func,
-};
-
-export default LandingPage;
