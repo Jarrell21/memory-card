@@ -6,21 +6,23 @@ import {
   Fade,
   Typography,
 } from "@mui/material";
+import pokemonBackSide from "../../images/pokemon_card_backside.png";
 
 type PokemonCardProps = {
-  name: string;
-  detailsUrl: string;
-  clicked: boolean;
+  cardData: CardDataProps;
+  isFlipped: boolean;
+  shuffling: boolean;
   handleCardClick: (name: string, clicked: boolean) => void;
 };
 
-export default function PokemonCard({
-  name,
-  detailsUrl,
-  clicked,
-  handleCardClick,
-}: PokemonCardProps) {
-  const pokemonId = sliceString(detailsUrl, "/");
+type CardDataProps = {
+  name: string;
+  url: string;
+  clicked: boolean;
+};
+
+export default function PokemonCard(props: PokemonCardProps) {
+  const pokemonId = sliceString(props.cardData.url, "/");
   const pokemonImg = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
 
   function sliceString(input: string, delimiter: string) {
@@ -34,21 +36,46 @@ export default function PokemonCard({
 
   return (
     <Fade in={true} style={{ transformOrigin: "0 0 0" }} {...{ timeout: 2000 }}>
-      <Card variant="outlined" sx={{ maxWidth: 345, maxHeight: 400 }}>
-        <CardActionArea onClick={() => handleCardClick(name, clicked)}>
-          <CardMedia component="img" image={pokemonImg} alt={name} />
-          <CardContent>
-            <Typography
-              gutterBottom
-              variant="h5"
-              component="div"
-              textAlign={"center"}
-            >
-              {capitalize(name)}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
+      <div className={`flip-card ${props.isFlipped ? "flipped" : ""}`}>
+        <div className="flip-card-inner">
+          {!props.shuffling ? (
+            <Card className="flip-card-front" variant="outlined">
+              <CardActionArea
+                onClick={() =>
+                  props.handleCardClick(
+                    props.cardData.name,
+                    props.cardData.clicked
+                  )
+                }
+              >
+                <CardMedia
+                  component="img"
+                  image={pokemonImg}
+                  alt={props.cardData.name}
+                />
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    textAlign={"center"}
+                  >
+                    {capitalize(props.cardData.name)}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          ) : (
+            <Card className="flip-card-back">
+              <CardMedia
+                component="img"
+                image={pokemonBackSide}
+                alt={props.cardData.name}
+              />
+            </Card>
+          )}
+        </div>
+      </div>
     </Fade>
   );
 }
