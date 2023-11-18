@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 
 type GameResultModalProps = {
+  loading: boolean;
   openResultModal: OpenResultModalProps;
   setOpenResultModal: (arg: OpenResultModalProps) => void;
   restartGame: () => void;
@@ -32,33 +33,24 @@ const style = {
 };
 
 export default function GameResultModal({
+  loading,
   openResultModal,
   setOpenResultModal,
   restartGame,
 }: GameResultModalProps) {
-  const [loading, setLoading] = React.useState(false);
-  const handleClose = () => {
-    restartGame();
-    setLoading(true);
-
-    setTimeout(() => {
+  React.useEffect(() => {
+    if (!loading) {
       setOpenResultModal({
         open: false,
         loading: loading,
         playerWon: false,
       });
-      setLoading(false);
-    }, 2000);
-  };
+    }
+  }, [loading]);
 
   return (
     <Modal
       open={openResultModal.open}
-      onClose={(event, reason) => {
-        if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
-          handleClose();
-        }
-      }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -105,7 +97,7 @@ export default function GameResultModal({
             {loading ? (
               <CircularProgress />
             ) : (
-              <Button variant="contained" onClick={handleClose}>
+              <Button variant="contained" onClick={() => restartGame()}>
                 Play again
               </Button>
             )}

@@ -1,29 +1,18 @@
 import * as React from "react";
-import {
-  Button,
-  CircularProgress,
-  Fade,
-  Grid,
-  Skeleton,
-  Typography,
-} from "@mui/material";
+import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import GameResultModal from "./GameResultModal";
 import PokemonCardsList from "./PokemonCardsList";
+import { getRandomNumber } from "../../helpers/HelperFunctions";
+import useData from "./useData";
 
 type GameProps = {
   difficulty: number;
   setGameStart: (arg: boolean) => void;
 };
 
-type ExpectedData = {
-  name: string;
-  url: string;
-};
-
 export default function Game({ difficulty, setGameStart }: GameProps) {
-  const [data, setData] = React.useState<ExpectedData[]>([]);
   const [dataOffSet, setDataOffSet] = React.useState(getRandomNumber(1001));
-  const [loading, setLoading] = React.useState(true);
+  const { data, setData, error, loading } = useData({ dataOffSet, difficulty });
   const [score, setScore] = React.useState(0);
   const [bestScore, setBestScore] = React.useState(0);
   const [openResultModal, setOpenResultModal] = React.useState({
@@ -31,29 +20,6 @@ export default function Game({ difficulty, setGameStart }: GameProps) {
     loading: loading,
     playerWon: false,
   });
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://pokeapi.co/api/v2/pokemon?offset=${dataOffSet}&limit=${difficulty}`
-        );
-        let tempData = await response.json();
-        tempData = getEveryThirdItem(tempData.results);
-
-        tempData = tempData.map((obj: ExpectedData) => ({
-          ...obj,
-          clicked: false,
-        }));
-
-        setData(tempData);
-        loadCards();
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, [dataOffSet, difficulty]);
 
   React.useEffect(() => {
     if (score > bestScore) {
@@ -65,26 +31,6 @@ export default function Game({ difficulty, setGameStart }: GameProps) {
     const randomNumber = getRandomNumber(1001);
     setDataOffSet(randomNumber);
     setScore(0);
-  }
-
-  function loadCards() {
-    setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }
-
-  function getEveryThirdItem(array: ExpectedData[]) {
-    var result = [];
-    for (var i = 0; i < array.length; i += 3) {
-      result.push(array[i]);
-    }
-    return result;
-  }
-
-  function getRandomNumber(limit: number) {
-    return Math.floor(Math.random() * limit);
   }
 
   return (
@@ -124,7 +70,13 @@ export default function Game({ difficulty, setGameStart }: GameProps) {
         setScore={setScore}
         setOpenResultModal={setOpenResultModal}
       />
+      {error && (
+        <Box
+          textAlign={"center"}
+        >{`There is a problem fetching the post data - ${error}`}</Box>
+      )}
       <GameResultModal
+        loading={loading}
         openResultModal={openResultModal}
         setOpenResultModal={setOpenResultModal}
         restartGame={handleGetNewDataSet}
