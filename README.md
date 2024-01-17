@@ -3,6 +3,7 @@
 A simple Pokemon Memory Card Game to practice React.
 
 ## Built with
+- [PokeAPI](https://pokeapi.co/)
 - React
 - TypeScript
 - Material UI
